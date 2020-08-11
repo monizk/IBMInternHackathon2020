@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Farming Insights</title>
+    <script>
+        const $SCRIPT_ROOT = "{{request.script_root}}";
+        const position = {
+            latitude: {{ latitude }},
+            longitude: {{ longitude }}
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Varta:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- <script src="https://d3js.org/d3.v5.min.js"></script> -->
+
+    <script src="{{ url_for('static', filename='graph.js')}}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+<ul class="sidenav">
+    <center>
+    <li class="opt selectOpt" tabindex="0" onclick="changeTab(this)"> <img style="width:3em" src="{{ url_for('static', filename='home.svg') }}"></img><br/> Home</li>
+    <li class="opt" tabindex="1" onclick="changeTab(this)"> <img style="width:3em" src="{{ url_for('static', filename='weather.svg') }}"></img><br/> Weather </li>
+    <li class="opt" tabindex="2" onclick="changeTab(this)"> <img style="width:3em" src="{{ url_for('static', filename='stats.svg') }}"></img><br/> Stats </li> 
+    <li class="opt" tabindex="3" onclick="changeTab(this)"> <img style="width:3em" src="{{ url_for('static', filename='profile.svg') }}"></img><br/> Profile </li>
+    <li class="opt" tabindex="4" onclick="changeTab(this)"> <img style="width:3em" src="{{ url_for('static', filename='about.svg') }}"></img><br/> About </li>
+    </center>
+</ul>
+
+<div class="main">
+    <h1 id="title">Farming Insights</h1>
+    <div id="opt1" class="optContent selectContent">
+        <div class="dashboardContainer" id="forecastDashboard">
+            <h3>Forecast Dashboard</h3>
+            <p style="padding-left: 0%" id="dashboard-description">(loading...)</p>
+            <div class="container dashboard">
+                <div class="row">
+                    <div class="col-sm-4">
+                        Temperature: <span id="dashboard-temp">(loading...)</span>
+                    </div>
+                    <div class="col-sm-4">
+                        <center>
+                        <span id="dashboard-overcast">(loading...)</span>
+                        </center>
+                    </div>
+                    <div class="col-sm-4">
+                        Precipitation: <span id="dashboard-percipitation">(loading...)</span>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-sm-12">
+                        Description: 
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <br/>
+        <div class="dashboardContainer">
+            <h3>Your Daily Overview</h3>
+            <div class="container">
+                <div class="col-sm-4">
+                    <h3>Recommended Irrigation Schedule</h3>
+                    <p>Frequency: <span id="recc-freq">(loading...)</span> times</p>
+                    <p>Duration: <span id="recc-dur">(loading...)</span> minutes each</p>
+                </div>
+                <div class="col-sm-4">
+                    <h3>Times to Avoid Watering:</h3>
+                    <ul id="recc-avoid"></ul>
+                </div>
+                <div class="col-sm-4">
+                    <h3>Total Rainfall Inches</h3>
+                    <p id="recc-total">(loading...)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="opt2" class="optContent">
+        <div class="dashboardContainer">
+            <h3>Weather</h3>
+            <h4>Precipitation Levels</h4>
+            <svg id="graph-precip" viewBox="0 0 1000 500" preserveAspectRatio="true">
+                <rect x="0" y="0" width="1000" height="500" fill="white" opacity="1"></rect>
+            </svg>
+        </div>
+    </div>
+    
+    <div id="opt3" class="optContent">
+        <div class="dashboardContainer">
+            <h3>Stats</h3> 
+            <div>
+                <h4>Water Usage in Past Month</h4>
+                <svg id="graph-usage" viewBox="0 0 1000 500" preserveAspectRatio="true">
+                    <rect x="0" y="0" width="1000" height="500" fill="white" opacity="1"></rect>
+                </svg>
+                <p style="font-size:1.5em">This past month, you used your irrigation for <span id="summary-hours-saved">(loading...)</span> hours less compared to your typical schedule. Given a farm of your size ({{ plotSize }} acres),
+                that comes out to about <span id="summary-gallons-saved">(loading...)</span> gallons.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="opt4" class="optContent">
+        
+        <div class="dashboardContainer">
+            <h3>Profile</h3>
+            <div class="container">
+            <div class="col-sm-4">
+                <h4>Irrigation Schedule</h4>
+                Frequency: {{ frequency }}<br/>
+                Duration: {{ duration }}
+            </div>
+            <div class="col-sm-4">
+                <h4>Plot Size:</h4>
+                {{ plotSize }} Acres
+            </div>
+            <div class="col-sm-4" id="content">
+                <h4>Location:</h4>
+                <p>Latitude: {{ latitude }}<br/>Longitude: {{ longitude }}</p>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="opt5" class="optContent">
+        <div class="dashboardContainer">
+            <h3>About</h3>
+            <!--reasons for small/medium farmers to save water, nice images of water or something-->
+            <ul>
+                <li class="info">Water sustainability is vital. Water is a finite and  irreplaceable resource that we as a society need to conserve. Farmers are especially guilty of overuse. Having a way that could accurately utilize weather data and provide a personalized and optimized watering schedule for farmers would be exceedingly helpful in minimizing waste. Our technology could be paired with additional sensors, such as soil sensors, to make even more targeted irrigation schedules.</li>
+                <image class="center" src="https://www.commondreams.org/sites/default/files/styles/cd_large/public/views-article/farms.jpeg?itok=cTmtRuzF">
+                <li class="info">In recent years there has been an increase in droughts across the globe. This has impacted communities by increasing water shortages, increasing risk of fires, and reduced crop yield. Agriculture can account for <b>60-75%</b> of global water withdrawals. Irrigation helps to provide a supply to plants to maximize crop yield. Irrigation can be inefficient due to over watering crops and depleting resources. Irrigation systems that include a pump system need a constant supply in order to maintain pressure. This is causing a severe impact in aquifers. The fresh water is being pulled to over water crops and salt water is replacing the reserve. Irrigation controls to reduce water usage surrounding rainfall events can reduce water waste, and that's what we aim to do. </li>
+                <br>
+                <li class="info">Using this tool, small and medium sized farmers will be able to better understand their water usage and follow precipitation insights to reduce water used in irrigation. Efficient irrigation usage can show a 35% reduction in water usage over a season. For a farm of 5 acres this can account for x reduction in gallons of water used.  The recommendations of when to reduce irrigation and by how much allow crops to receive adequate water supplies and produce a maximum yield.</li>
+                <br>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="user" style="position:fixed;bottom:0;left:0;z-index:2;">
+    <p>{{ username }}</p>
+    <form action="/logout">
+        
+        <button><img style="width:3em" src="{{ url_for('static', filename='logout.svg') }}"></img><br/> Logout</button>
+    </form>
+</div>
+
+<script>
+    //FARMER JOE LIVES
+    window.watsonAssistantChatOptions = {
+        integrationID: "0e370c6a-529d-48a3-b8da-40df76c51f28", // The ID of this integration.
+        region: "us-south", // The region your integration is hosted in.
+        serviceInstanceID: "264761be-1096-4bcf-a009-39ce7a9f16d5", // The ID of your service instance.
+        onLoad: function(instance) { instance.render(); }
+      };
+    setTimeout(function(){
+      const t=document.createElement('script');
+      t.src="https://web-chat.global.assistant.watson.appdomain.cloud/loadWatsonAssistantChat.js";
+      document.head.appendChild(t);
+    });
+  </script>
+</body>
+</html>

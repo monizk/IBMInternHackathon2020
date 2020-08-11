@@ -1,0 +1,113 @@
+body, html {
+  margin: 0;
+  padding: none;
+  font-family: "Varta", sans-serif;
+  background: url(https://free4kwallpapers.com/uploads/originals/2015/07/16/low-poly-ice.jpg) no-repeat center center fixed;
+  background-size: cover;
+  background-color: #4D6D9A;
+}
+
+button {
+  width: 7em;
+  border: none;
+  padding: 1rem 0.5rem;
+  color: white;
+  background: #4D6D9A;
+}
+
+ul {
+  padding: 0;
+}
+
+.sidenav {
+  height: 100vh;
+  background:black;
+  width: 7em;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  padding-top: 5vh;
+  box-shadow: 0 0 8px 0px #888;
+}
+
+.main {
+    margin-left: 7em;
+    padding: 8px 16px;
+}
+
+.opt:hover, .opt:active, .opt:focus, .selectOpt, button:hover, button:active, button:focus {
+  background: #4D6D9A;
+  cursor: pointer;
+  font-weight: bold;
+  outline: none;
+  list-style-type: none;
+}
+
+.opt {
+  padding: 0.5rem 0.5rem;
+  color: white;
+}
+
+.optContent{
+    display: none;
+    visibility: hidden;
+}
+
+.selectContent {
+  display: block;
+  visibility: visible;
+}
+
+.dashboardContainer {
+  padding: 0.5% 5%;
+  background: white;
+  opacity: 0.85;
+  color: black;
+  border-radius: 0.25rem;
+  /*box-shadow: 0 0 8px 0px white;*/
+}
+
+#forecastDashboard .container {
+  padding: 1% 5%;
+  width: 90%;
+  font-size: 1.5em;
+}
+
+.dashboard {
+  border-radius: 1rem;
+  border-style: none;
+  vertical-align: middle;
+  color: black;
+  box-shadow: 0 0 8px 0px white;
+  background-color: #4D6D9A;
+  font-size: 1.3em;
+}
+
+.container {
+  font-size: 1.3em;
+}
+
+.bargraph-bar{
+  fill:#0077be;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+#user {
+  color: white;
+}
+
+.center {
+  display: block;
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2%;
+}
+
+.info {
+  list-style-type: none;
+  text-align: center;
+  font-size: 16px;
+}

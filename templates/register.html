@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Farmer Insights Register</title>
+    <script>
+        const $SCRIPT_ROOT = "{{request.script_root}}";
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Varta:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script src="{{ url_for('static', filename='register.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+</head>
+<body>
+    <h1 id="title">Farmer Insights</h1>
+    <form method="POST" action="/register">
+        <label>Email:</label><br/>
+        <input type="email" name="email" placeholder="email@mail.com" required minlength="7"/><br/>
+        <label>Username:</label><br/>
+        <input type="text" name="username" placeholder="username" required minlength="8"/><br/>
+        <label>Password:</label><br/>
+        <input type="password" name="password" placeholder="password" required minlength="8"/><br/>
+        <label>Location:</label><br/>
+        <input id="latitudeInput" type="number" name="latitude" placeholder="latitude" step="0.01" required/>
+        <input type="number" id="longitudeInput" name="longitude" placeholder="longitude" step="0.01" required/>
+        <button type="button" onclick="getLocation()">Autofill?</button><br/>
+        <label>How large is your farm?</label><br/>
+        <input type="number" name="plotSize" placeholder="N acres" step="0.01" min="0" required/><br/>
+        <label>How frequently does your irrigation system turn on, and for how long each time?</label><br/>
+        <input type="number" name="frequency" placeholder="freq. (M times/day)" step="1" min="1" required/>
+        <input type="number" name="duration" placeholder="duration (N minutes)" step="1" min="1" required/><br/>
+        <br/>
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>
